@@ -15,4 +15,4 @@ Other than these influences, the code is my own. It is the end result of my goal
 
 The libraries OpenGLUT and GLEW are required to run the code. The header-only library glm is required for the matrix transformations. These libraries must be installed on your system in order to build and run the program.
 
-The makefile is written for Visual Studio and has been tested with the VS 2010 command prompt. Only small modifications need to made to the makefile to build similar projects.
+The makefile is written for Visual Studio and has been tested with the VS 2010 command prompt. Only small modifications need to made to the makefile to build similar projects. On the VC command prompt the command 'nmake' should suffice, and 'nmake clean' to clean up.
