@@ -12,3 +12,7 @@ The tutorial at http://open.gl/ provided the basis for the code you see here, al
 This code is also influenced by the tutorials at http://en.wikibooks.org/wiki/OpenGL_Programming which also teach you how to create a spinning cube. It is worth bookmarking some of these as good, modern OpenGL tutorials are notoriously difficult to find on the web.
 
 Other than these influences, the code is my own. It is the end result of my goal to create a simple OpenGL demonstration using the modern programmable pipeline, and using my own preferences for window creation and code organization. 
+
+The libraries OpenGLUT and GLEW are required to run the code. The header-only library glm is required for the matrix transformations. These libraries must be installed on your system in order to build and run the program.
+
+The makefile is written for Visual Studio and has been tested with the VS 2010 command prompt. Only small modifications need to made to the makefile to build similar projects.
