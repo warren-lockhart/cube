@@ -15,4 +15,6 @@ Other than these influences, the code is my own. It is the end result of my goal
 
 The libraries OpenGLUT and GLEW are required to run the code. The header-only library glm is required for the matrix transformations. These libraries must be installed on your system in order to build and run the program.
 
+Note that Android has a very similar library for matrix operations, so that the glm code can be changed rather trivially to support that platform; see http://developer.android.com/reference/android/opengl/Matrix.html. Setting up the OpenGL ES2.0/3.0 context and responsing to user interaction (to replicate the GLUT code) are a little more involved, but still straightforward; see http://developer.android.com/training/graphics/opengl/index.html. 
+
 The makefile is written for Visual Studio and has been tested with the VS 2010 command prompt. Only small modifications need to made to the makefile to build similar projects. On the VC command prompt the command 'nmake' should suffice, and 'nmake clean' to clean up.
