@@ -1,9 +1,9 @@
 #include <cstdlib>
 #include <GL/glew.h>
 #ifdef __APPLE__
-#  include <GLUT/openglut.h>
+#include <GLUT/openglut.h>
 #else
-#  include <GL/openglut.h>
+#include <GL/openglut.h>
 #endif
 #include <cstdio>
 #include <math.h>
@@ -115,13 +115,12 @@ const GLchar* fragmentSource =
 	
 static int make_resources(void)
 {
-	// Create Vertex Array Object
+    // Create Vertex Array Object
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
- 
-	glGenBuffers(1, &vbo); // Generate 1 buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glGenBuffers(1, &vbo); // Generate 1 buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	
 	// Create and compile the vertex shader
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -135,6 +134,7 @@ static int make_resources(void)
 	
 	GLint status;
 	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
+
 	if(!status)
 	{
 		char buffer[512];
@@ -145,9 +145,13 @@ static int make_resources(void)
 		(stderr, "Please check your code.\n");
 		return 0;
 	}
-	else printf("The vertex shader compiled successfully.\n");
+	else
+	{
+		printf("The vertex shader compiled successfully.\n");
+	}
 	
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
+
 	if(!status)
 	{
 		char buffer[512];
@@ -158,13 +162,15 @@ static int make_resources(void)
 		fprintf(stderr, "Please check your code.\n");
 		return 0;
 	}
-	else printf("The fragment shader compiled successfully.\n");
+	else
+	{
+		printf("The fragment shader compiled successfully.\n");
+	}
 
 	// Link the vertex and fragment shader into a shader program
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
-	//glBindFragDataLocation(shaderProgram, 0, "outColor");
 	glLinkProgram(shaderProgram);
 
 	// Specify the layout of the attribute data
@@ -172,7 +178,7 @@ static int make_resources(void)
 	colAttrib = glGetAttribLocation(shaderProgram, "color");
 	texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
 
-   // Load textures
+    // Load textures
     glGenTextures(2, textures);
 
 	int width, height;
@@ -197,10 +203,7 @@ static int make_resources(void)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	//uniModel = glGetUniformLocation(shaderProgram, "model");
-	//uniView = glGetUniformLocation(shaderProgram, "view");
-	//uniProj = glGetUniformLocation(shaderProgram, "proj");
+
 	uniMVP = glGetUniformLocation(shaderProgram, "mvp");
 	
 	return 1;
@@ -225,35 +228,31 @@ static void render(void)
 
 	glUseProgram(shaderProgram);
 
-	// keep glm variables local - global matrices caused problems
-	// e.g. very fast and accelerating square! 
+	// keep glm variables local - global matrices can cause problems
+	// e.g. fast, accelerating square, (try it).
 	glm::mat4 model;
 	model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
 	glm::mat4 view;
+
 	view = glm::lookAt(
         glm::vec3(1.5f, 1.5f, 1.5f),
         glm::vec3(0.0f, 0.0f, 0.0f),
         glm::vec3(0.0f, 0.0f, 1.0f)
     );
+
 	glm::mat4 proj;
 	proj = glm::perspective(PI/4.0f, 800.0f / 600.0f, 1.0f, 10.0f);
 	glm::mat4 mvp;
 	mvp = proj * view * model;
-	//glm::mat4 mvp = glm::rotate(mvp, angle, glm::vec3(0.0f, 0.0f, 1.0f));
+
 	glUniformMatrix4fv(uniMVP, 1, GL_FALSE, glm::value_ptr(mvp));
-	
-	//glUniformMatrix4fv(uniModel, 1, GL_FALSE, glm::value_ptr(model));
-	//glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
-	//glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE,
-                       8*sizeof(float), 0);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), 0);
 					   
 	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-                       8*sizeof(float), (void*)(3*sizeof(float)));
+	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(3*sizeof(float)));
 
 	glEnableVertexAttribArray(texAttrib);
     glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));	
@@ -286,10 +285,12 @@ int main(int argc, char** argv)
     glutDisplayFunc(&render);
 
     glewInit();
+
     if (!GLEW_VERSION_2_1) {
         fprintf(stderr, "OpenGL 2.1 not available\n");
         return 1;
     }
+
 	else printf("Good, your PC has OpenGL 2.1.\n\n");
 
     if (!make_resources()) {
@@ -299,7 +300,6 @@ int main(int argc, char** argv)
 
 	glEnable(GL_DEPTH_TEST);
     glutMainLoop();
-	
 	
     return 0;
 }
